@@ -1,5 +1,21 @@
 # CostMAP
 
+# NOTE
+
+Extra data:
+
+- cities.txt
+- urbanareas.txt
+- lakes.txt
+
+Missing data:
+
+- population.asc
+
+Treating `cities.txt` as `population.asc`.
+
+---------------
+
 [![Java CI with Gradle](https://github.com/daniellivingston/costmap/actions/workflows/gradle.yml/badge.svg)](https://github.com/daniellivingston/costmap/actions/workflows/gradle.yml)
 
 A tool for creating Cost Networks and Surfaces for SimCCS.

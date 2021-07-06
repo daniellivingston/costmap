@@ -121,7 +121,8 @@ public class costSolver {
         //Read in population file if it exists
         if (isSelectedPop == true) {
             System.out.println("Importing Population Data ...");
-            popMatrix = getDetails(headerInfo, "Datasets/ASCII/population.asc");
+            //popMatrix = getDetails(headerInfo, "Datasets/ASCII/population.asc");
+            popMatrix = getDetails(headerInfo, "Datasets/ASCII/cities.asc");
         }
         
         for (int i = 0; i < nlcdMatrix.length; i++) {
