@@ -28,6 +28,15 @@ javafx {
     ]
 }
 
+apply plugin: 'java'
+
+compileJava {
+    // Manually setting heap size: https://stackoverflow.com/a/37466
+    // Try to use max amount of RAM: https://stackoverflow.com/a/39729522
+    options.compilerArgs << '-Xlint:unchecked'
+    options.forkOptions.jvmArgs << '-J-XX:MaxRAMFraction=1 -J-verbosegc' // Might add: -XX:+AggressiveOpts
+}
+
 java {
     modularity.inferModulePath.set(true)
 }
