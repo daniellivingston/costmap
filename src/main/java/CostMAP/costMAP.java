@@ -53,7 +53,7 @@ public class costMAP extends Application {
         //Set up
         BorderPane pane = new BorderPane();
         VBox topContainer = new VBox();  //Creates a container to hold all Menu Objects.
-        MenuBar mainMenu = new MenuBar();  //Creates our main menu to hold our Sub-Menus.    
+        MenuBar mainMenu = new MenuBar();  //Creates our main menu to hold our Sub-Menus.
 
         //Menus
         Menu file = new Menu("File");
@@ -69,6 +69,7 @@ public class costMAP extends Application {
         //Buttons
         Button runButton = new Button("Run");
         Button canButton = new Button("Cancel");
+        Button bmpButton = new Button("Write Raster");
 
         //Importing info
         CheckBox chkDefaultLandcover = new CheckBox("Land Cover");
@@ -123,7 +124,9 @@ public class costMAP extends Application {
                 new Separator(),
                 buttonArea,
                 new Separator(),
-                chkCustom
+                chkCustom,
+                new Separator(),
+                bmpButton
         );
 
         pane.getStylesheets().add("styles.css");
@@ -150,10 +153,10 @@ public class costMAP extends Application {
                 try {
                     costSolver costs = new costSolver();
                     costSolver cells = new costSolver();
-                    
+
                     Dictionary costList = new Hashtable();
                     Dictionary rowList = new Hashtable();
-                    
+
                     boolean isSelectedPop = chkDefaultPop.isSelected();
                     boolean isSelectedAspect = chkDefaultAspect.isSelected();
                     boolean isSelectedRivers = chkDefaultRivers.isSelected();
@@ -162,41 +165,41 @@ public class costMAP extends Application {
                     boolean isSelectedPipelines = chkDefaultPipelines.isSelected();
                     Dictionary headerInfo = costs.getHeader("Datasets/ASCII/landcover.asc");
                     double [][] distMult = costs.distanceMultiplier(headerInfo);
-                    
+
                     if (chkDefaultLandcover.isSelected()) {
                         System.out.println("Importing Landcover Data for Construction... ");
                         costList =  costs.landcoverInput(isSelectedPop, "Datasets/ASCII/landcover.asc");
                     }
-                    
+
                     if (chkDefaultSlope.isSelected()) {
                         System.out.println("Importing Slope Data ... ");
                         costList = costs.slopeInput(costList, isSelectedAspect, "Datasets/ASCII/slope.asc");
-                    }            
+                    }
 
                     if (chkDefaultRivers.isSelected()) {
                         System.out.println("Importing River Data ... ");
                         costList = costs.addRiverCrossings(costList,headerInfo, "Datasets/ASCII/rivers.asc");
-                    }  
+                    }
                     if (chkDefaultRoads.isSelected()) {
                         System.out.println("Importing Roads Data ... ");
                         costList = costs.addRoadCrossings(costList,headerInfo, "Datasets/ASCII/roads.asc");
-                    }                   
+                    }
                     if (chkDefaultRails.isSelected()) {
                         System.out.println("Importing Railroad Data ... ");
                         costList = costs.addRailCrossings(costList,headerInfo, "Datasets/ASCII/railroads.asc");
-                    }                  
+                    }
                     if (chkDefaultPipelines.isSelected()) {
                         System.out.println("Importing Pipeline Data ... ");
                         costList = costs.addPipelineCorridor(costList,headerInfo, "Datasets/ASCII/pipelines.asc");
                     }
                     BufferedWriter outputConstruction = new BufferedWriter(new FileWriter("Outputs" + sep + "Construction Costs.txt"));
-                    
+
                     System.out.println("Calculating Distance ...");
                     costList = costs.solveDistance(headerInfo, distMult, costList, "Datasets/ASCII/landcover.asc");
                     System.out.println("Writing to files...");
                     costs.writeTxt(costList, headerInfo, outputConstruction);
                     System.out.println("Construction calculations are complete.");
-//                    
+//
                     if (chkDefaultLandcover.isSelected()) {
                         System.out.println("Importing Landcover Data for ROWS ... ");
                         rowList =  costs.landcoverInput(isSelectedPop, "Datasets/ASCII/landcover.asc");
@@ -208,18 +211,16 @@ public class costMAP extends Application {
                     rowList = costs.solveDistance(headerInfo, distMult, rowList, "Datasets/ASCII/landcover.asc");
                     BufferedWriter outputROWS = new BufferedWriter(new FileWriter("Outputs" + sep + "RightOfWay Costs.txt"));
                     costs.writeTxt(rowList, headerInfo, outputROWS);
-//                    
+//
                     System.out.println("The Rights of way calculations are complete. ");
-                    
+                    System.out.println("(with yllCorner change.)");
+
                 } catch (IOException ex) {
                     Logger.getLogger(costMAP.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
                     Logger.getLogger(costMAP.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                } 
-                
-            
-
+            }
         });
 
         canButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -231,11 +232,22 @@ public class costMAP extends Application {
                 return;
             }
         });
+
+        bmpButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("BMP Raster Button");
+                String path = "Outputs/construction.png"
+                writeRaster rasterWriter = new writeRaster();
+                //rasterWriter.writeToRaster(constructionGrid);
+                return;
+            }
+        });
+
         return new Scene(pane, 1050, 660);
     }
 
     public static void main(String[] args) {
-
         launch(args);
     }
 }
