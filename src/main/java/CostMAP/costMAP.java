@@ -1,6 +1,7 @@
 package cost_MAP;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -228,7 +229,6 @@ public class costMAP extends Application {
             public void handle(ActionEvent e) {
                 //Just making sure stuff is working with this print
                 System.out.println("Thank you for cancelling. I can rest now.");
-
                 return;
             }
         });
@@ -236,10 +236,24 @@ public class costMAP extends Application {
         bmpButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println("BMP Raster Button");
-                String path = "Outputs/construction.png"
+                String landcoverPath = "Datasets/ASCII/landcover.asc";
+                String outputPath = "Outputs/construction.png";
+                Boolean importPopulationData = true;
+
+                costSolver tmpCostSolver = new costSolver();
                 writeRaster rasterWriter = new writeRaster();
-                //rasterWriter.writeToRaster(constructionGrid);
+
+                try {
+                    Dictionary headerInfo = tmpCostSolver.getHeader(landcoverPath);
+                    double[][] landcoverMatrix = tmpCostSolver.getDetails(headerInfo, landcoverPath);
+                    rasterWriter.writeToRaster(outputPath, landcoverMatrix);
+                    //tmpCostSolver.landcoverInput(importPopulationData, "Datasets/ASCII/landcover.asc");
+
+                    System.out.println("Successfully wrote to " + outputPath);
+                } catch (IOException ex) {
+                    System.err.println("Could not find path");
+                }
+
                 return;
             }
         });

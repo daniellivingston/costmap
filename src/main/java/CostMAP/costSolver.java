@@ -64,7 +64,6 @@ public class costSolver {
     }
 
     public double[][] getDetails(Dictionary headerInfo, String path) throws FileNotFoundException, IOException {
-
         BufferedReader br = new BufferedReader(new FileReader(path));
 
         double [][] aoiMatrix = new double[(int) headerInfo.get("Rows")][(int) headerInfo.get("Columns")];
@@ -72,22 +71,17 @@ public class costSolver {
         String line = br.readLine();
         //read next line and then get number of rows
         line = br.readLine();
-
+        line = br.readLine();
+        line = br.readLine();
+        line = br.readLine();
+        line = br.readLine();
         line = br.readLine();
 
-        line = br.readLine();
-
-        line = br.readLine();
-
-        line = br.readLine();
-
-        line = br.readLine();
         while (line != null) {
             for (double[] aoiMatrix1 : aoiMatrix) {
                 String[] values = line.split("[ ]+");
                 for (int j = 0; j < values.length; j++) {
                     aoiMatrix1[j] = Double.parseDouble(values[j]);
-
                 }
                 line = br.readLine();
             }
