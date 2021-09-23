@@ -44,6 +44,7 @@ public class writeRaster {
         ImageIO.write(image, "png", ImageFile);
     }
 
+    /*
     public double[][] landcoverInput(boolean isSelectedPop, String path) throws FileNotFoundException, IOException, Exception {
 
         System.out.println("PATH IS: " + path);
@@ -135,26 +136,28 @@ public class writeRaster {
                         break;
                     default:
                         tempMatrix[i][j] = (int) headerInfo.get("NoData");
-
                 }
+            }
+        }
 
-        }
-        }
-        Dictionary costList = new Hashtable();
+        //Dictionary costList = new Hashtable();
+        double[][] costMatrix = new double[(int) headerInfo.get("Rows")][(int) headerInfo.get("Columns")];
         int cell = 0;
+
         for (int i = 0; i < tempMatrix.length; i++) {
             for (int j = 0; j < tempMatrix[0].length; j++) {
                     cell = cell +1;
 
                     double[] landKernel = kernel(tempMatrix, i, j);
                     double[] costs = solveLand(landKernel);
-                    costList.put(cell, costs);
+                    costMatrix[i][j] = costs;
+                    //costList.put(cell, costs);
             }
         }
 
-
-       return costList;
+       return costMatrix;
     }
+    */
 }
 
 
