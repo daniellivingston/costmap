@@ -31,6 +31,6 @@ build
 .gradle
 
 # Data and output
-Datasets/
+Datasets/*/**
 Outputs/*.txt
 compareData/

@@ -34,6 +34,11 @@ public class costMAP extends Application {
 
     @Override
     public void start(Stage stage) {
+        System.out.println("Initializing CostMAP.");
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
+        // costEnv.setDatasetDir(System.getProperty("user.dir") + "/Datasets/ASCII/");
+        costEnv.setDatasetDir("/scratch/eescommon/CostMAP/100m_Datasets/ASCII_WGS84/data_small/");
 
         Scene scene = buildGUI(stage);
         stage.setScene(scene);
@@ -164,53 +169,53 @@ public class costMAP extends Application {
                     boolean isSelectedRoads = chkDefaultRoads.isSelected();
                     boolean isSelectedRails = chkDefaultRails.isSelected();
                     boolean isSelectedPipelines = chkDefaultPipelines.isSelected();
-                    Dictionary headerInfo = costs.getHeader("Datasets/ASCII/landcover.asc");
+                    Dictionary headerInfo = costs.getHeader(costEnv.getLandcoverPath());
                     double [][] distMult = costs.distanceMultiplier(headerInfo);
 
                     if (chkDefaultLandcover.isSelected()) {
                         System.out.println("Importing Landcover Data for Construction... ");
-                        costList =  costs.landcoverInput(isSelectedPop, "Datasets/ASCII/landcover.asc");
+                        costList =  costs.landcoverInput(isSelectedPop, costEnv.getLandcoverPath());
                     }
 
                     if (chkDefaultSlope.isSelected()) {
                         System.out.println("Importing Slope Data ... ");
-                        costList = costs.slopeInput(costList, isSelectedAspect, "Datasets/ASCII/slope.asc");
+                        costList = costs.slopeInput(costList, isSelectedAspect, costEnv.getSlopePath());
                     }
 
                     if (chkDefaultRivers.isSelected()) {
                         System.out.println("Importing River Data ... ");
-                        costList = costs.addRiverCrossings(costList,headerInfo, "Datasets/ASCII/rivers.asc");
+                        costList = costs.addRiverCrossings(costList,headerInfo, costEnv.getRiversPath());
                     }
                     if (chkDefaultRoads.isSelected()) {
                         System.out.println("Importing Roads Data ... ");
-                        costList = costs.addRoadCrossings(costList,headerInfo, "Datasets/ASCII/roads.asc");
+                        costList = costs.addRoadCrossings(costList,headerInfo, costEnv.getRoadsPath());
                     }
                     if (chkDefaultRails.isSelected()) {
                         System.out.println("Importing Railroad Data ... ");
-                        costList = costs.addRailCrossings(costList,headerInfo, "Datasets/ASCII/railroads.asc");
+                        costList = costs.addRailCrossings(costList,headerInfo, costEnv.getRailroadsPath());
                     }
                     if (chkDefaultPipelines.isSelected()) {
                         System.out.println("Importing Pipeline Data ... ");
-                        costList = costs.addPipelineCorridor(costList,headerInfo, "Datasets/ASCII/pipelines.asc");
+                        costList = costs.addPipelineCorridor(costList,headerInfo, costEnv.getPipelinesPath());
                     }
-                    BufferedWriter outputConstruction = new BufferedWriter(new FileWriter("Outputs" + sep + "Construction Costs.txt"));
+                    BufferedWriter outputConstruction = new BufferedWriter(new FileWriter(costEnv.getOutputPath() + sep + "Construction Costs.txt"));
 
                     System.out.println("Calculating Distance ...");
-                    costList = costs.solveDistance(headerInfo, distMult, costList, "Datasets/ASCII/landcover.asc");
+                    costList = costs.solveDistance(headerInfo, distMult, costList, costEnv.getLandcoverPath());
                     System.out.println("Writing to files...");
                     costs.writeTxt(costList, headerInfo, outputConstruction);
                     System.out.println("Construction calculations are complete.");
 //
                     if (chkDefaultLandcover.isSelected()) {
                         System.out.println("Importing Landcover Data for ROWS ... ");
-                        rowList =  costs.landcoverInput(isSelectedPop, "Datasets/ASCII/landcover.asc");
+                        rowList =  costs.landcoverInput(isSelectedPop, costEnv.getLandcoverPath());
                     }
 ////                    if (chkDefaultPipelines.isSelected()) {
 ////                        System.out.println("Importing Pipeline Data ... ");
 ////                        rowList = costs.addPipelineCorridor(rowList,headerInfo, "Datasets/ASCII/pipelines.asc");
 ////                    }
-                    rowList = costs.solveDistance(headerInfo, distMult, rowList, "Datasets/ASCII/landcover.asc");
-                    BufferedWriter outputROWS = new BufferedWriter(new FileWriter("Outputs" + sep + "RightOfWay Costs.txt"));
+                    rowList = costs.solveDistance(headerInfo, distMult, rowList, costEnv.getLandcoverPath());
+                    BufferedWriter outputROWS = new BufferedWriter(new FileWriter(costEnv.getOutputPath() + sep + "RightOfWay Costs.txt"));
                     costs.writeTxt(rowList, headerInfo, outputROWS);
 //
                     System.out.println("The Rights of way calculations are complete. ");
@@ -236,8 +241,8 @@ public class costMAP extends Application {
         bmpButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                String landcoverPath = "Datasets/ASCII/landcover.asc";
-                String outputPath = "Outputs/construction.png";
+                String landcoverPath = costEnv.getLandcoverPath();
+                String outputPath = costEnv.getOutputPath() + "/construction.png";
                 Boolean importPopulationData = true;
 
                 costSolver tmpCostSolver = new costSolver();

@@ -33,7 +33,9 @@ compileJava {
     options.compilerArgs << '-Xlint:unchecked'
 }
 
-applicationDefaultJvmArgs = ["-XX:MaxRAMFraction=1", "-verbosegc"]
+application {
+    applicationDefaultJvmArgs = ["-XX:MaxRAMFraction=1", "-verbosegc", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:MaxMetaspaceSize=512m", "-XX:MaxMetaspaceSize=200g", "-Xms220g", "-Xmx220g", "-XX:ParallelGCThreads=8", "-XX:+UnlockDiagnosticVMOptions"]
+}
 
 java {
     modularity.inferModulePath.set(true)
