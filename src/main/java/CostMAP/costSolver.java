@@ -81,8 +81,10 @@ public class costSolver {
 
         while (line != null) {
             for (double[] aoiMatrix1 : aoiMatrix) {
-                String[] values = line.split("[ ]+");
-                for (int j = 0; j < values.length; j++) {
+                //String[] values = line.split("[ ]+");
+                String[] values = line.split("\\s+");
+                //for (int j = 0; j < values.length; j++) {
+                for (int j = 0; j < aoiMatrix1.length; j++) {
                     try {
                         aoiMatrix1[j] = Double.parseDouble(values[j]);
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -92,7 +94,7 @@ public class costSolver {
                         System.err.println("--> length: target matrix row = " + String.valueOf(aoiMatrix1.length));
 
                         br.close();
-                        //throw new UncheckedIOException(e.getMessage());
+
                         throw new UncheckedIOException(
                             new IOException(e.getCause())
                         );
