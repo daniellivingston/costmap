@@ -1,5 +1,7 @@
 # CostMAP
 
+# **REQUIRES: Java 1.8, Gradle < 4.10
+
 # NOTE
 
 Extra data:
