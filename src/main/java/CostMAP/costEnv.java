@@ -33,6 +33,11 @@ public class costEnv {
         datasetDir = dir;
     }
 
+    public static void setOutputDir(String dir) {
+        printDebug("Set: output dir = " + dir);
+        outputDir = dir;
+    }
+
     public static String getDatsetDir() {
         return datasetDir;
     }

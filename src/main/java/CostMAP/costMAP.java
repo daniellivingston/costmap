@@ -34,11 +34,8 @@ public class costMAP extends Application {
 
     @Override
     public void start(Stage stage) {
-        System.out.println("Initializing CostMAP.");
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
-        // costEnv.setDatasetDir(System.getProperty("user.dir") + "/Datasets/ASCII/");
         costEnv.setDatasetDir("/scratch/eescommon/CostMAP/100m_Datasets/ASCII_WGS84/data_small/");
+        costEnv.setOutputDir("/scratch/sft/livingston/costmap/costmap/Output/");
 
         Scene scene = buildGUI(stage);
         stage.setScene(scene);
