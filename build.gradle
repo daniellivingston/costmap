@@ -2,18 +2,25 @@
  * Gradle build file for CostMAP.
  */
 
+
 plugins {
-  id 'application'
-  id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 repositories {
     mavenCentral()
 }
 
+dependencies {
+    /* uncomment for cross-platform jar: */
+    runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:win"
+    runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:linux"
+    runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:mac"
+}
 
 javafx {
-    version = "17"
+    version = "16"
     modules = [
         'javafx.controls',
         'javafx.fxml',
@@ -24,10 +31,15 @@ javafx {
     ]
 }
 
-//compileJava {
-//    options.compilerArgs << '-Xlint:unchecked'
-//}
-//
-//applicationDefaultJvmArgs = ["-XX:MaxRAMFraction=1", "-verbosegc"]
+mainClassName = 'cost_MAP.CostMAP'
 
-mainClassName = 'cost_MAP.costMAP'
+jar {
+    manifest {
+        attributes 'Main-Class': 'cost_MAP.Launcher'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+

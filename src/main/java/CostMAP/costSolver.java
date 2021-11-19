@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.ArrayIndexOutOfBoundsException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -79,9 +81,24 @@ public class costSolver {
 
         while (line != null) {
             for (double[] aoiMatrix1 : aoiMatrix) {
-                String[] values = line.split("[ ]+");
-                for (int j = 0; j < values.length; j++) {
-                    aoiMatrix1[j] = Double.parseDouble(values[j]);
+                //String[] values = line.split("[ ]+");
+                String[] values = line.split("\\s+");
+                //for (int j = 0; j < values.length; j++) {
+                for (int j = 0; j < aoiMatrix1.length; j++) {
+                    try {
+                        aoiMatrix1[j] = Double.parseDouble(values[j]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.err.println("FATAL: out of bounds while attempting to read " + path);
+                        System.err.println("--> index = " + String.valueOf(j));
+                        System.err.println("--> length: file row = " + String.valueOf(values.length));
+                        System.err.println("--> length: target matrix row = " + String.valueOf(aoiMatrix1.length));
+
+                        br.close();
+
+                        throw new UncheckedIOException(
+                            new IOException(e.getCause())
+                        );
+                    }
                 }
                 line = br.readLine();
             }
