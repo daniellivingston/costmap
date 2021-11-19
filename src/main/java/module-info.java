@@ -1,4 +1,6 @@
 module cost_MAP.CostMAP {
     requires javafx.controls;
-    exports CostMAP;
+    requires java.logging;
+    requires java.desktop;
+    exports cost_MAP;
 }
