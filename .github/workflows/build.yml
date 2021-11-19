@@ -17,7 +17,7 @@ jobs:
         mkdir deploy/
         docker run \
           -v $(pwd)/deploy:/java/dev/share \
-          ees16/simccs:latest \
+          ees16/costmap:latest \
           /bin/bash -c "cp /java/dev/build/cost_MAP.jar /java/dev/share/"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4
