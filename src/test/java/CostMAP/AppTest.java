@@ -3,11 +3,11 @@
  */
 package SimCCS;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+//import org.junit.Test;
+//import static org.junit.Assert.*;
 
 public class AppTest {
-    @Test public void testAppHasAGreeting() {
-        System.out.println("Hello world");
-    }
+    //@Test public void testAppHasAGreeting() {
+    //    System.out.println("Hello world");
+    //}
 }
